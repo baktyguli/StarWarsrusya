@@ -1,41 +1,30 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import SwapiService from '../../services/swapi-service'
 import './person-details.css';
 
-export default class PersonDetails extends Component {
 
-  swapi = new SwapiService()
+const PersonDetails = () => {
 
-  state = {
-    data: {}
-  }
+  const [state, setState] = useState({data: {}})
+  const {id, name, gender, birthYear, eyeColor} = state.data ;
+  const personImg = `https://starwars-visualguide.com/assets/img/characters/${id}.jpg`
+  const swapi = new SwapiService() 
 
-  _updatePerson = (id) => {
-    this.swapi.getPerson(id)
+  const updatePerson = () => {
+    const id = Math.floor(Math.random() * (20 - 1 + 1) + 1)
+    swapi.getPerson(id)
     .then(data => {
-      this.setState({data: data})
+      setState({data: data})
     })
   }
-
-  componentDidMount = () => {
-
-    setInterval(() => {
-      const id = Math.floor(Math.random() * (25 - 1 + 1) + 1)
-      this._updatePerson(id)
-    }, 3000)
-  }
+  useEffect(()=>{
+    updatePerson()
+    setInterval(() => updatePerson(), 3000)
+  }, [])
 
 
 
-  render() {
-
-
-    
-
-    const {id, name, gender, birthYear, eyeColor} = this.state.data;
-    const personImg = `https://starwars-visualguide.com/assets/img/characters/${id}.jpg`
-
-    return (
+  return(
       <div className="person-details card">
         <img className="person-image"
           src={personImg}/>
@@ -58,6 +47,7 @@ export default class PersonDetails extends Component {
           </ul>
         </div>
       </div>
-    );
-  }
+  )
 }
+
+export default PersonDetails;
