@@ -21,6 +21,7 @@ const RandomPlanet = () => {
     updatePlanet()
     setInterval(() => updatePlanet(), 3000)
   }, [])
+  console.log('Random planet rendered');
 
 
 
