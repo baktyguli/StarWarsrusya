@@ -1,49 +1,54 @@
 import React, { useState, useEffect } from 'react';
-import SwapiService from '../../services/swapi-service'
 import './item-details.css';
+import SwapiService from '../../services/swapi-service';
 
 
 const ItemDetails = ({itemId}) => {
+  const [state, setState] = useState({ data: {} })
+  const { id, population, name, rotationPeriod, diameter } = state.data;
 
-  const [state, setState] = useState({data: {}})
-  const {id, name, gender, birthYear, eyeColor} = state.data ;
-  const ItemImg = `https://starwars-visualguide.com/assets/img/characters/${id}.jpg`
-  const swapi = new SwapiService() 
+  const swapi = new SwapiService()
+  const planetImg = `https://starwars-visualguide.com/assets/img/planets/${id}.jpg`
 
+  const updatePlanet = () => {
+    const id = Math.floor(Math.random() * (20 - 1 + 1) + 1)
+    swapi.getPlanet(id)
+      .then(data => {
+        setState({ data: data })
+      })
+  }
 
-  useEffect(() => {
-    swapi.getPerson(itemId)
+  useEffect(() => { 
+    swapi.getPlanet(itemId)
     .then(data => {
-      setState({data: data})
+      setState({data : data})
     })
   }, [itemId])
 
+  return (
+    <div className="person-details card">
+      <img className="person-image"
+        src={planetImg} />
 
-
-  return(
-      <div className="person-details card">
-        <img className="person-image"
-          src={ItemImg}/>
-
-        <div className="card-body">
-          <h4>{name}</h4>
-          <ul className="list-group list-group-flush">
-            <li className="list-group-item">
-              <span className="term">Gender</span>
-              <span>{gender}</span>
-            </li>
-            <li className="list-group-item">
-              <span className="term">Birth Year</span>
-              <span>{birthYear}</span>
-            </li>
-            <li className="list-group-item">
-              <span className="term">Eye Color</span>
-              <span>{eyeColor}</span>
-            </li>
-          </ul>
-        </div>
+      <div className="card-body">
+        <h4>{name}</h4>
+        <ul className="list-group list-group-flush">
+          <li className="list-group-item">
+            <span className="term">population</span>
+            <span>{population}</span>
+          </li>
+          <li className="list-group-item">
+            <span className="term">rotationPeriod</span>
+            <span>{rotationPeriod}</span>
+          </li>
+          <li className="list-group-item">
+            <span className="term">diameter</span>
+            <span>{diameter}</span>
+          </li>
+        </ul>
       </div>
-  )
+    </div>
+  );
 }
 
 export default ItemDetails;

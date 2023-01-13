@@ -1,19 +1,21 @@
 import React from "react"
-import { Consumer } from '../swapi-context'
+import {Consumer} from '../swapi-context'
 
 function withSwapi (View) {
-      const Wrapper = (props) => {
-        return (
-          <Consumer>
+    const Wrapper = (props) => {
+    return (
+        <Consumer>
             {
-              (swapi) => {
-                 return <View {...props} swapi={swapi} />
-              }
+                (swapi) => {
+                   return <View {...props} swapi={swapi}/>
+                }
             }
-          </Consumer>
-        )
-      }
-      return Wrapper;
-  }
-console.log('Function withSwapi rendered;');
+        </Consumer>
+    )
+  
+    }
+    return Wrapper
+    
+}
+
 export default withSwapi;
